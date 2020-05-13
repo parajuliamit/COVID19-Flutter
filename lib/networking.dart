@@ -26,8 +26,8 @@ class UpdateNumbers {
     }
     if (response.statusCode == 200) {
       var decodedData = jsonDecode(response.body);
-      print(country);
-      print(response.body);
+//      print(country);
+//      print(response.body);
       if (decodedData[0]['lastUpdate'] == null) {
         return ['--', '--', '--', '--', '--'];
       }

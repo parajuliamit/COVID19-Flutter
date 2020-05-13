@@ -26,6 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   void getNumbers() async {
+    setState(() {
+      data.clear();
+      data = ['--', '--', '--', '--', '--'];
+    });
     dynamic updatedData = await UpdateNumbers()
         .get(region == selectedRegion.global ? 'Global' : selected.isoCode);
     setState(() {
