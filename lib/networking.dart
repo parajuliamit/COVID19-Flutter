@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -31,7 +30,6 @@ class UpdateNumbers {
       if (decodedData[0]['lastUpdate'] == null) {
         return ['--', '--', '--', '--', '--'];
       }
-      ;
       try {
         int confirmed = decodedData[0]['confirmed'];
         int deaths = decodedData[0]['deaths'];
