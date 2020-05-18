@@ -2,7 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UpdateNumbers {
-  static const _api_key = '5a05253a6fmsh2f021035f56a7ddp1ef4e1jsn46d114c90a57';
+  //TODO ADD YOUR API KEY HERE
+  static const _api_key = '<You API Key>';
   static const String _baseUrl = "covid-19-data.p.rapidapi.com";
   static const Map<String, String> _headers = {
     "content-type": "application/json",

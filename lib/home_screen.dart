@@ -47,55 +47,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
 //        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            flex: 30,
-            child: Container(
+          children: <Widget>[
+            Container(
+              height: 250.0,
               padding:
                   EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 10),
 //              height: 250,
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color(0xFF3383CD),
-                    Color(0xFF4c60e0),
-                  ],
-                ),
-//              borderRadius: BorderRadius.only(
-//                bottomRight: Radius.circular(20.0),
-//                bottomLeft: Radius.circular(20.0),
-//              ),
+                color: Colors.teal[100],
               ),
               child: SafeArea(
                 child: Column(
                   children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'COVID-19',
-                        style: kMainTitleStyle,
-                      ),
+                    Text(
+                      'COVID-19',
+                      style: kMainTitleStyle,
                     ),
                     Expanded(
-                      flex: 2,
                       child: Row(
                         children: <Widget>[
-                          ImageText(
-                            image: 'images/washHands.png',
-                            text: 'Wash your hands',
+                          Expanded(
+                            child: Container(
+                              child: Image.asset(
+                                'images/corona.png',
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerRight,
+                              ),
+                            ),
                           ),
-                          ImageText(
-                            image: 'images/socialDistancing.png',
-                            text: 'Avoid close contacts',
-                          ),
-                          ImageText(
-                            image: 'images/masks.png',
-                            text: 'Wear a facemask',
+                          Expanded(
+                            child: Container(
+                              child: Image.asset(
+                                'images/stayhome.png',
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -104,85 +96,99 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 10,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-                margin: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(width: 1, color: Colors.black),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      MediaQuery.of(context).size.width > 250
+                          ? 'Select country:'
+                          : '',
+                      style: TextStyle(fontSize: 14.0, color: Colors.grey[700]),
+                    )),
+                Container(
+                  padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(width: 1, color: Colors.teal[100]),
+                  ),
+                  child: CountryPicker(
+                    showDialingCode: false,
+                    showName: false,
+                    showCurrency: false,
+                    showCurrencyISO: false,
+                    onChanged: (Country country) {
+                      setState(() {
+                        selected = country;
+                        region == selectedRegion.country
+                            ? getNumbers()
+                            : region = selectedRegion.global;
+                      });
+                    },
+                    selectedCountry: selected,
+                  ),
                 ),
-                child: CountryPicker(
-                  showDialingCode: false,
-                  showName: true,
-                  showCurrency: false,
-                  showCurrencyISO: false,
-                  onChanged: (Country country) {
-                    setState(() {
-                      selected = country;
-                      region == selectedRegion.country
-                          ? getNumbers()
-                          : region = selectedRegion.global;
-                    });
-                  },
-                  selectedCountry: selected,
-                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  height: 30.0,
+                  width: 30.0,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.blueGrey,
+                    autofocus: true,
+                    elevation: 2.0,
+                    onPressed: getNumbers,
+                    child: Icon(
+                      Icons.refresh,
+                      size: 25.0,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Container(
+              width: 500.0,
+              padding: EdgeInsets.all(5.0),
+              margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 5.0),
+              decoration: BoxDecoration(
+                color: Colors.teal[100],
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RegionSelect(
+                    title: selected.name,
+                    color: region == selectedRegion.country
+                        ? Colors.teal
+                        : Colors.teal[100],
+                    onPress: () {
+                      setState(() {
+                        region = selectedRegion.country;
+                        getNumbers();
+                      });
+                    },
+                  ),
+                  RegionSelect(
+                    title: 'Global',
+                    color: region == selectedRegion.global
+                        ? Colors.teal
+                        : Colors.teal[100],
+                    onPress: () {
+                      setState(() {
+                        region = selectedRegion.global;
+                        getNumbers();
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            flex: 8,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
-              child: Container(
-                padding: EdgeInsets.all(5.0),
-                margin: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 5.0),
-                decoration: BoxDecoration(
-                  color: Color(0xFF3383CD),
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    RegionSelect(
-                      title: selected.name,
-                      color: region == selectedRegion.country
-                          ? kActiveColor
-                          : kInactiveColor,
-                      onPress: () {
-                        setState(() {
-                          region = selectedRegion.country;
-                          getNumbers();
-                        });
-                      },
-                    ),
-                    RegionSelect(
-                      title: 'Global',
-                      color: region == selectedRegion.global
-                          ? kActiveColor
-                          : kInactiveColor,
-                      onPress: () {
-                        setState(() {
-                          region = selectedRegion.global;
-                          getNumbers();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            Padding(
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 children: <Widget>[
                   Text(
@@ -196,61 +202,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          ),
-          Expanded(
-            flex: 50,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white,
-                elevation: 2.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    width: 500.0,
+                    child: Row(
                       children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Counter(
-                                number: data[1],
-                                color: kInfectedColor,
-                                title: 'Total Cases',
-                              ),
-                              Counter(
-                                number: data[2],
-                                color: kDeathColor,
-                                title: 'Deaths',
-                              ),
-                            ],
-                          ),
+                        Counter(
+                          number: data[1],
+                          color: kInfectedColor,
+                          title: 'Total Cases',
                         ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Counter(
-                                number: data[3],
-                                color: kActiveCasesColor,
-                                title: 'Active Cases',
-                              ),
-                              Counter(
-                                number: data[4],
-                                color: kRecoverColor,
-                                title: 'Recovered',
-                              ),
-                            ],
-                          ),
+                        Counter(
+                          number: data[2],
+                          color: kDeathColor,
+                          title: 'Deaths',
                         ),
                       ],
-                    )),
+                    ),
+                  ),
+                  Container(
+                    width: 500.0,
+                    child: Row(
+                      children: <Widget>[
+                        Counter(
+                          number: data[3],
+                          color: kActiveCasesColor,
+                          title: 'Active Cases',
+                        ),
+                        Counter(
+                          number: data[4],
+                          color: kRecoverColor,
+                          title: 'Recovered',
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    '© 2020 Amit Parajuli. All rights reserved.',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -281,33 +283,6 @@ class RegionSelect extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ImageText extends StatelessWidget {
-  final String image;
-  final String text;
-
-  ImageText({this.image, this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Image.asset(
-              image,
-            ),
-          ),
-          Text(
-            text,
-            style: kSubTextStyle,
-            textAlign: TextAlign.center,
-          ),
-        ],
       ),
     );
   }

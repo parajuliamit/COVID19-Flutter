@@ -18,7 +18,10 @@ const kHeadingTextStyle = TextStyle(
 );
 
 const kMainTitleStyle = TextStyle(
-    color: kBackgroundColor, fontWeight: FontWeight.bold, fontSize: 25.0);
+    color: Colors.white70,
+    fontWeight: FontWeight.bold,
+    fontSize: 50.0,
+    fontFamily: 'SquadaOne');
 
 const kSubTextStyle = TextStyle(
   fontSize: 16,
@@ -26,7 +29,7 @@ const kSubTextStyle = TextStyle(
 );
 
 const kTitleTextStyle = TextStyle(
-  fontSize: 20,
+  fontSize: 19,
   color: kTextLightColor,
   fontWeight: FontWeight.bold,
 );
@@ -37,10 +40,10 @@ const kSmallTextStyle = TextStyle(
 );
 
 const kSelectedTextStyle = TextStyle(
-  fontSize: 20,
+  fontSize: 18,
   color: kBackgroundColor,
 );
 
-const Color kInactiveColor = Color(0xFF3383CD);
+//const Color kInactiveColor = Colors.teal[100];
 
-const Color kActiveColor = Color(0xFF11249F);
+//const Color kActiveColor = Color(0xFF11249F);
